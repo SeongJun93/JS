@@ -201,3 +201,65 @@ var elem = null;
 // elem 이 null 이나 undefind 와 같은 falsy 값이면 elem 으로 평가되고
 // elem 이 truthy 값이면 elem.value 로 평가된다
 var value = elem && elem.value; // null
+
+// 함수 매개변수에 기본값을 설정할때
+// 함수를 호출할 때 인수를 전달하지 않으면 매개변수에는 undefind 가 할당된다 이때 단축 평가를 사용해 매개변수의 기본값을 설정하면
+// undefind로 인해 발생할수 있는 에러를 방지할수 있다
+
+// 단축 평가를 사용한 매개변수의 기본값 설정
+function getStringLength(str){
+    str = str || '';
+    return str.length;
+}
+
+getStringLength() //0
+getStringLength('hi')//2
+// 매개변수의 기본값 
+function getStringLength(str = ''){
+
+}
+getStringLength() //0
+getStringLength('hi')//2
+
+// 옵셔널 체이닝 연산자
+// 체이닝 연산자 ? 는 조항의 피연산자가 null 또는 undefind 인 경우 undefind 를 반환하고 그렇지 않으면 후항의 프로퍼티 참조를 이어간다
+var elem = elem?.value;
+console.log(value);// undefind
+// 옵셔널 체이닝 연산자?.는 객체를 가리키기를 기대하는 변수가 null 또는 undefind 가 아닌지 확인하고 프로퍼티를 참조할 때 유용하다.
+// 옵셔널 체이닝 연산자?. 가 도입되기 이전에는 논리 연산자 && 를 사용한 단축 평가를 통해 변수가 null 또는 undefind 인지 확인했다
+
+var elem = null;
+// elem falsy 값이면 elem으로 평가되고, elem이 truthy 값이면 elem.value로 평가된다
+var value = elem && elem.value
+console.log(value); //null
+
+// 논리 연산자 && 좌항 피연산자가 false 로평가되는 값 이 좌항 피연산자를 그대로 반환한다 좌항 피연산자가 falsy 값인 0이나 ''인경우도
+// 마찬가지이다 하지만 0은 이나 '' 객체로 평가 될때도 있다
+var str='';
+var length = str&&str.length;
+console.log(length); //''
+// 하지만 옵셔널 체이닝 연산자 ?. 는 좌항 피연산자가 false로 평가되는 falsy 값 (false.undefined.null.0.-0.NaN.'')이라도
+// null 또는 undefind가 아니면 우항의 프로퍼티를 참조를 이어간다
+
+var str = '';
+// 문자열의 길이를 참조한다 이때 좌항 피연산자가 false로 평가되는 falsy 값이라도
+// null 또는 undefind 가 아니면 우항의 프로퍼티 참조를 이어간다
+var length = str?.length;
+console.log(length); // 0
+
+
+// null 병합 연산자
+// 널 병합 연산자는 ?? 좌항의 피연산자가 null 또는 undefind 인 경우 우항의 피연산자를 반환하고, 그렇지 않으면 좌항의 피연산자를
+// 반환한다 null 병합 연산자는 ?? 는 변수에 기본값을 설정할때 유리하다
+
+// 좌항의 피연산자가 null 또는 undefinded 이면 우항의 피연산자를 반환하고. 그렇지않으면 좌항의 피연산자를 반환환다
+var foo = null ?? 'default string';
+console.log(foo);// 'defalut string'
+
+// falsy 값인 0이나 ''도 기본값으로서 유효하다면 예기치 않은 동작이 발생할수 있다
+var foo = '' || 'defalut string'
+console.log(foo) //  defalut string
+
+// 좌항의 피연산자가 falsy 값이라도 Null 또는 undefined 가 아니면 좌항의 피연산자를 반환한다
+var foo = '' ?? 'default string'
+console.log(foo) // ''
